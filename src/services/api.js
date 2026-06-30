@@ -1,8 +1,19 @@
 import axios from 'axios'
 
-// All API calls go to VITE_API_URL or fallback to /api (proxied to localhost:5000 by Vite)
+// Normalize VITE_API_URL to ensure it always ends with /api (handling missing/duplicate path suffixes)
+let apiURL = import.meta.env.VITE_API_URL || '';
+
+if (apiURL) {
+  if (!apiURL.endsWith('/api') && !apiURL.endsWith('/api/')) {
+    const normalized = apiURL.endsWith('/') ? apiURL.slice(0, -1) : apiURL;
+    apiURL = `${normalized}/api`;
+  }
+} else {
+  apiURL = '/api';
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: apiURL,
   headers: { 'Content-Type': 'application/json' },
 })
 
