@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-// All API calls go to /api (proxied to localhost:5000 by Vite)
+// All API calls go to VITE_API_URL or fallback to /api (proxied to localhost:5000 by Vite)
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: { 'Content-Type': 'application/json' },
 })
 
